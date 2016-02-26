@@ -1,9 +1,9 @@
 //document.getElementById("demo").innerHTML = "Page location is: ";
 var allTabs;
-document.getElementById("create").addEventListener("click", createTab);
-document.getElementById("window").addEventListener("click", createWindow);
+//document.getElementById("create").addEventListener("click", createTab);
+//document.getElementById("window").addEventListener("click", createWindow);
 document.getElementById("restore").addEventListener("click", restoreTab);
-<<<<<<< HEAD
+
 document.getElementById("reduce").addEventListener("click", reduce);
 
 function saveTabs() {
@@ -45,7 +45,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
         }
       });
 
-=======
+
 document.getElementById("save").addEventListener("click", save);
 
 
@@ -66,7 +66,7 @@ chrome.tabs.onRemoved.addListener(function(tabId){
   chrome.tabs.reload();
 });
 */
->>>>>>> 06bd2be56812c26275d5f0e0fd3b2b4301ad4125
+
 
 function restoreTab(){
 	chrome.sessions.restore(null,null);
@@ -101,7 +101,7 @@ chrome.windows.getAll({populate: true}, function(windows){
   });
 
 //.addEventListener("click", removeTab);
-<<<<<<< HEAD
+
  // chrome.tabs.query({}, function (tabs) {
  // 	allTabs=tabs;
  // 		for(var i=0;i<tabs.length;i++){
@@ -116,7 +116,7 @@ chrome.windows.getAll({populate: true}, function(windows){
     //     var url = tabs[0].url;
     //     console.log("URL from main.js", url);
     // });
-=======
+/*
 chrome.tabs.query({}, function (tabs) {
  	allTabs=tabs;
  		for(var i=0;i<tabs.length;i++){
@@ -134,13 +134,11 @@ chrome.tabs.query({}, function (tabs) {
   var url = tabs[0].url;
   console.log("URL from main.js", url);
 });
->>>>>>> 06bd2be56812c26275d5f0e0fd3b2b4301ad4125
-
+*/
 // function createTab(){
 // 	chrome.tabs.create(null, null) ;
 // }
 
-<<<<<<< HEAD
 function reduce(){
 	console.log("reduce");
 	var x = document.getElementsByClassName("reduce");
@@ -167,8 +165,7 @@ console.log("ad");
   }
 }
 
-function removeTab() {
-=======
+
 /*function removeTab() {
 >>>>>>> 06bd2be56812c26275d5f0e0fd3b2b4301ad4125
 	var tabId=parseInt(this.id);
