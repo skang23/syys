@@ -2,7 +2,7 @@
   "name": "Tab Inspector",
   "description": "Utility for working with the extension tabs api",
   "version": "0.3",
-  "permissions": ["tabs", "sessions"],
+  "permissions": ["tabs", "sessions","storage"],
   "background": {
     "persistent": false,
     "scripts": ["background.js"]
