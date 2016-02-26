@@ -46,7 +46,7 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
       });
 
 
-document.getElementById("save").addEventListener("click", save);
+//document.getElementById("save").addEventListener("click", save);
 
 
 /*
@@ -237,39 +237,40 @@ function createWindow() {
   }
 }*/
 
-function saveTabs() {
-  //var tabId=parseInt(this.id);
-  var tabsToSave = {};  //get selected tabs (from current tabs list)
+// function saveTabs() {
+//   //var tabId=parseInt(this.id);
+//   var tabsToSave = [];  //get selected tabs (from current tabs list)
 
-  //console.log(tabId);
-  try {
-    //savedTabs.add(this);
-    for (int i = 0; i < tabsToSave; i++) {
-      chrome.storage.sync.set(tabsToSave[i], function(){  //or the entire array at once?
-        if (chrome.runtime.lastError) {
-          alert('Error: '+chrome.runtime.lastError);
-        } 
-        else {
-         alert('Tab saved.');
-        }
-      });
+//   //console.log(tabId);
+//   try {
+//     //savedTabs.add(this);
+//     for (int i = 0; i < tabsToSave.length; i++) {
+//       chrome.storage.sync.set(tabsToSave[i], function(){  //or the entire array at once?
+//         if (chrome.runtime.lastError) {
+//           alert('Error: '+chrome.runtime.lastError);
+//         } 
+//         else {
+//          alert('Tab saved.');
+//         }
+//       });
     
-      chrome.tabs.remove(tabId, function() {
-      console.log('tab: ' + tabId + ' saved.');
-      chrome.tabs.reload();
-      });
-    }
-  } catch (e) {
-    alert(e);
-  }
-}
-
+//       chrome.tabs.remove(tabId, function() {
+//       console.log('tab: ' + tabId + ' saved.');
+//       chrome.tabs.reload();
+//       });
+//     }
+//   } catch (e) {
+//     alert(e);
+//   }
+// }
+/*
 function getTabs() {
   var tabsToGet = [];  //get selected tabs (from saved tabs list)
                         //remove from the saved list?
 
   chrome.storage.sync.get(tabsToGet, function(tabs){
       try {
+        tabsToGet = tabs;
         for (int i = 0; i < tabsToGet.length; i++) {
           chrome.tabs.create(tabsToGet[i]);
         }
@@ -278,4 +279,4 @@ function getTabs() {
         alert(e);
       }
   });
-}
+}*/
