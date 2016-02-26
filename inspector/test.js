@@ -240,16 +240,45 @@ function createWindow() {
   }
 }*/
 
-function saveTab() {
-  var tabId=parseInt(this.id);
-  console.log(tabId);
+function saveTabs() {
+  //var tabId=parseInt(this.id);
+  var tabsToSave = {};  //get selected tabs (from current tabs list)
+
+  //console.log(tabId);
   try {
-    savedTabs.add(this);
-    chrome.tabs.remove(tabId, function() {
-    console.log('tab: ' + tabId + ' saved.');
-    chrome.tabs.reload();
-    });
+    //savedTabs.add(this);
+    for (int i = 0; i < tabsToSave; i++) {
+      chrome.storage.sync.set(tabsToSave[i], function(){  //or the entire array at once?
+        if (chrome.runtime.lastError) {
+          alert('Error: '+chrome.runtime.lastError);
+        } 
+        else {
+         alert('Tab saved.');
+        }
+      });
+    
+      chrome.tabs.remove(tabId, function() {
+      console.log('tab: ' + tabId + ' saved.');
+      chrome.tabs.reload();
+      });
+    }
   } catch (e) {
     alert(e);
   }
+}
+
+function getTabs() {
+  var tabsToGet = [];  //get selected tabs (from saved tabs list)
+                        //remove from the saved list?
+
+  chrome.storage.sync.get(tabsToGet, function(tabs){
+      try {
+        for (int i = 0; i < tabsToGet.length; i++) {
+          chrome.tabs.create(tabsToGet[i]);
+        }
+        chrome.tabs.reload();
+      } catch (e) {
+        alert(e);
+      }
+  });
 }
