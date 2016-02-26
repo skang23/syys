@@ -42,3 +42,4 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   // 	'height':500
   // });
 });
+
