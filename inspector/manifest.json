@@ -9,7 +9,6 @@
   },
   "browser_action": {
     "default_title": "show tab inspector"
-    //"default_popup": "test.html"
   },
   "manifest_version": 2
 }

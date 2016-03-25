@@ -1,34 +1,54 @@
 var allTabs, allWindows;
-//document.getElementById("create").addEventListener("click", createTab);
-//document.getElementById("window").addEventListener("click", createWindow);
-document.getElementById("restore").addEventListener("click", restoreTab);
+document.getElementById("restore").addEventListener("click", restoreRecentTab);
 document.getElementById("reduce").addEventListener("click", reduceTabs);
 
-var storedTabs = [];
-
+var reducedTabs = [];
 function reduceTabs() {
   console.log("reduce");
   var x = document.getElementsByClassName("reduce");
   for(var i=0;i<x.length;i++){
     if(x[i].checked){
       var ID=parseInt(x[i].id);
+      
+      chrome.tabs.get(ID, function(item) {
+        var obj={};
+        obj[ID]=item.title;
+        //var tab = {"ID":ID, "Title":item.title};
+        chrome.storage.sync.set(obj, function() {
+          chrome.storage.sync.get('reduced', function(items){
+        var str2 = JSON.stringify(items);
+    console.log(str2);
+    alert("reduced data"+str2);
+    });
+        });
+        reducedTabs.push(item);
+        alert(tab.Title)
+      })
       removeTabWithId(ID);
-      //storedTabs.push(ID);
     }
     console.log(x[i].checked);
   }
   // Get a value saved in a form.
-  var theValue = textarea.value;
+  //var theValue = textarea.value;
   // Check that there's some code there.
-  if (!theValue) {
-    message('Error: No value specified');
-    return;
-  }
+  //if (!theValue) {
+  //  message('Error: No value specified');
+  //  return;
+  //}
   // Save it using the Chrome extension storage API.
-  chrome.storage.sync.set({'value': theValue}, function() {
+ /* chrome.storage.sync.set({'reduced': reducedTabs}, function() {
     // Notify that we saved.
+    var str = JSON.stringify(reducedTabs);
+    console.log(str);
+    alert(str);
+    chrome.storage.sync.get('reduced', function(items){
+        var str2 = JSON.stringify(items);
+    console.log(str2);
+    alert("reduced data"+str2);
+    });
+    //alert(reducedTabs[0].ID);
     message('Settings saved');
-  });
+  });*/
 }
 
 chrome.storage.onChanged.addListener(function(changes, namespace) {
@@ -43,30 +63,30 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
   }
 });
 
-
-//document.getElementById("save").addEventListener("click", save);
-
-
-/*
 chrome.windows.onCreated.addListener(function(createInfo) {
-  chrome.tabs.reload();
+  //chrome.tabs.reload();
 });
 chrome.windows.onRemoved.addListener(function(windowId){
-  chrome.tabs.reload();
+  //chrome.tabs.reload();
 });
 chrome.tabs.onCreated.addListener(function(tab){
-  chrome.tabs.reload();
+  //chrome.tabs.reload();
 });
 chrome.tabs.onRemoved.addListener(function(tabId){
-  chrome.tabs.reload();
+  //chrome.tabs.reload();
 });
-*/
 
 
-function restoreTab(){
+//restore the most recently closed tab
+function restoreRecentTab(){
   chrome.sessions.restore(null,null);
   chrome.tabs.reload();
   //storedTabs[storedTabs.length - 1] = null;
+}
+
+//restore selected tab(s) among the stored tabs
+function restoreTabs() {
+
 }
 
 function alertMe(){
@@ -90,6 +110,35 @@ chrome.windows.getAll({populate: true}, function(windows){
   }
   windowHTML='</div>';
   document.getElementById("tabs").innerHTML+=windowHTML+'<br>';
+  }
+});
+
+
+
+chrome.storage.sync.get(null, function(items) {
+
+  var str = JSON.stringify(items);
+    console.log(str);
+    alert("current storage: "+str);
+
+  //console.log("Storage");
+  console.log(items);
+  var allKeys = Object.keys(items);
+  console.log("All Keys"+allKeys+" "+items["ID"]);
+  console.log(items.reduced)
+  for (var i=0; i<allKeys.length; i++) {
+   // for(var j=0;j<items[allKeys[i]].length;j++){
+      var item = items[allKeys[i]];
+
+       var title = item;
+      var buttonHTML='<input type="checkbox" class="restore" id="'+allKeys[i]+'">';
+      document.getElementById("reducedTabs").innerHTML+=buttonHTML+title+'<br>';
+   // }
+    //chrome.storage.get(allKeys[i], function(item) {
+    //  var title = item.Title;
+    //  var buttonHTML='<input type="checkbox" class="restore" id="'+item.ID+'">';
+    //  document.getElementById("reducedTabs").innerHTML+=buttonHTML+title+'<br>';
+    //});
   }
 });
 
