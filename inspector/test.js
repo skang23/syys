@@ -3,9 +3,29 @@ document.getElementById("restore").addEventListener("click", restoreRecentTab);
 document.getElementById("reduce").addEventListener("click", reduceTabs);
 //document.getElementsByClassName("restore_button").addEventListener("click", restoreTabs);
 
-$( ".restore_button" ).click(function() {
-  alert( "Handler for .click() called." );
+
+
+$(document.body).on('click', '.restore_button', function() {
+    var key = $(this).text();
+    var tabs = storedTabs[key];
+    alert(JSON.stringify(tabs));
+    for(var i=0;i<tabs.length;i++){
+      chrome.tabs.create({url:tabs[i].url});
+    }
+    chrome.storage.sync.remove(key,null);
+    $(this).parent().parent().hide();
+
 });
+
+$(document).ready(function(){
+  $(".restore_button").click(function(){
+    alert($(this));
+    $(this).hide();
+      alert( "Handler for .click() called." );
+
+  })
+});
+
 
 var reducedTabsId = [];
 var reducedTabs=[];
@@ -142,7 +162,7 @@ chrome.storage.sync.get(null, function(items) {
   storedTabs = items;
   for(var j=0;j<i;j++){
     var storedUnit = '<p>'+allKeys[j]+'</p>';
-    var storedUnit='<table class="table table-striped table-hover "><caption><button class="restore_button" type="button" id="'+allKeys[j]+ '">'+allKeys[j]+'</button></caption>';
+    var storedUnit='<table class="table table-striped table-hover "><caption><button type="button" class="restore_button" id="'+allKeys[j]+ '">'+allKeys[j]+'</button></caption>';
       storedUnit+=' <thead> <tr>   <th>Title</th> </tr> </thead><tbody>';
     var tabs = items[allKeys[j]];
     for(var k=0;k<tabs.length;k++){
