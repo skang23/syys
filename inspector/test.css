@@ -1,0 +1,15 @@
+table{
+	width:280;
+}
+
+td {
+	font-size: 10px;
+}
+
+.scrollbox {
+border: none;
+padding: 5px;
+width: 400px;
+height: 400px;
+overflow: scroll;
+}

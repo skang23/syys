@@ -35,6 +35,11 @@ chrome.browserAction.onClicked.addListener(function(tab) {
   });
   	}
   });
-
+  // chrome.windows.create({
+  // 	'type':"panel",
+  // 	'url':chrome.extension.getURL("test.html"),
+  // 	'width':300,
+  // 	'height':500
+  // });
 });
 
