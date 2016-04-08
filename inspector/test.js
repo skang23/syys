@@ -1,21 +1,26 @@
 var allTabs, allWindows;
-document.getElementById("restore").addEventListener("click", restoreRecentTab);
+//document.getElementById("restore").addEventListener("click", restoreRecentTab);
 document.getElementById("reduce").addEventListener("click", reduceTabs);
 //document.getElementsByClassName("restore_button").addEventListener("click", restoreTabs);
 
-
+//chrome.storage.sync.clear();
 
 $(document.body).on('click', '.restore_button', function() {
-    var key = $(this).text();
-    var tabs = storedTabs[key];
-    alert(JSON.stringify(tabs));
-    for(var i=0;i<tabs.length;i++){
-      chrome.tabs.create({url:tabs[i].url});
-    }
-    chrome.storage.sync.remove(key,null);
-    $(this).parent().parent().hide();
+  var key = $(this).text();
+  var tabs = storedTabs[key];
+  alert(JSON.stringify(tabs));
+  for(var i=0;i<tabs.length;i++){
+    chrome.tabs.create({url:tabs[i].url});
+  }
+  chrome.storage.sync.remove(key,null);
+  $(this).parent().parent().hide();
 
 });
+
+/*$(document.body).on('click', 'restore', function() {
+
+});*/
+document.getElementById("restore").addEventListener("click", restoreChecked);
 
 $(document).ready(function(){
   $(".restore_button").click(function(){
@@ -27,11 +32,22 @@ $(document).ready(function(){
 });
 
 
+function restoreChecked() {
+  var x = document.getElementsByClassName("reducedTabs");
+  for(var i=0;i<x.length;i++){
+    if(x[i].checked){
+      var ID=parseInt(x[i].id);
+      reducedTabsId.push(ID);
+    }
+    console.log(x[i].checked);
+  }
+}
+
+
 var reducedTabsId = [];
 var reducedTabs=[];
 
 var storedTabs;
-
 
 function getAllCheckedTabs(){
     for(var i = 0 ; i <allWindows.length;i++){
@@ -47,7 +63,7 @@ function getAllCheckedTabs(){
     }
   }
   }
-   var str = JSON.stringify(reducedTabs);
+  var str = JSON.stringify(reducedTabs);
   var key_text = document.getElementById("store_key").value;
   
   var dict = {};
@@ -85,15 +101,19 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 
 chrome.windows.onCreated.addListener(function(createInfo) {
   //chrome.tabs.reload();
+  location.reload();
 });
 chrome.windows.onRemoved.addListener(function(windowId){
   //chrome.tabs.reload();
+  location.reload();
 });
 chrome.tabs.onCreated.addListener(function(tab){
   //chrome.tabs.reload();
+  location.reload();
 });
 chrome.tabs.onRemoved.addListener(function(tabId){
   //chrome.tabs.reload();
+  location.reload();
 });
 
 
@@ -116,7 +136,6 @@ function escapeHTML(html) {
 
 var allWindows;
 
-
 chrome.windows.getAll({populate: true}, function(windows){
  
       allWindows = windows;
@@ -126,7 +145,7 @@ chrome.windows.getAll({populate: true}, function(windows){
       console.log(allWindows.length);
       var w = allWindows[i];
       var _tabs = w.tabs;
-      var windowHTML='<table class="table table-striped table-hover "><caption>Window '+i+ '</caption>';
+      var windowHTML='<table class="table table-striped table-hover "><caption>Window '+(i+1)+ '</caption>';
       windowHTML+=' <thead> <tr> <th>check</th>  <th>Title</th> </tr> </thead><tbody>';
     //  var windowHTML='<div> Window '+i;
      // document.getElementById("tabs").innerHTML+=windowHTML;
@@ -150,6 +169,11 @@ chrome.windows.getAll({populate: true}, function(windows){
 
 
 
+
+
+
+
+
 chrome.storage.sync.get(null, function(items) {
 
 
@@ -169,7 +193,7 @@ chrome.storage.sync.get(null, function(items) {
       var item = tabs[k];
       var title = item.title;
    //   var buttonHTML = '<input type="checkbox" class="restore" id="'+item.id+'">';
-      var buttonHTML='<tr class="'+item.id+'"><td class="col-md-1"><td class="col-md-9">'+title+'</td></tr>';
+      var buttonHTML='<tr class="'+item.id+'"><td class="col-md-1"><input type="checkbox" class="restore_check"><td class="col-md-9">'+title+'</td></tr>';
 
       storedUnit+=buttonHTML;
     }
